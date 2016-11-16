@@ -1,0 +1,72 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Video Games</title>
+</head>
+<body>
+    <h2>All Video Games</h2>
+    <ul id="videogames"></ul>
+
+    <h2>Video Game by Genre</h2>
+    <input type="text" genre="GameGenre" name="Action Adventure">
+    <input type="button" value="What Genre?" onclick="findByGenre();">
+    <!---Genre="Video Game"> Goes here --->
+
+    <h2>Video Game by Name</h2>
+    <input type="text" Name="GameName" name="Tomb Raider">
+    <input type="button" value="What Game?" onclick="findByName();">
+    <!---Name="Video Game"> Goes Here--->
+
+    <h2>Video Game by ID</h2>
+    <input type="text" name="gameID" size="10" />
+    <input type="button" value="Which Game?" onclick="findID();">
+    <!---ID="Video Game"> Goes here--->
+
+    <script src="http://ajax.aspnetcdn.com/ajax/jquery/jquery-3.1.1.js"></script>
+
+    <script>
+        var uri = 'api/videogames';
+
+        $(document).ready(function () {
+            $.getJSON(uri)
+                .done(function (data) {
+                    $.each(data, function (key, item) {
+                        $('<li>', { text: formatItem(item) }).appendTo($('#videogames'));
+                    });
+                });
+        });
+
+        function formatItem(videogame) {
+            return item.Name + ': $' + item.Price;
+        }
+
+        function findByGenre() {
+            var gameCatString = $('#gameCat').val();
+            $.getJSON(uri + "?cat" + gameCatString)
+                .done(function (data) {
+                    $("#gameCat").text('Error: ' + err);
+                });
+        }
+
+        function findByID() {
+            var id = $('#gameID').val();
+            $.getJSON(uri + "/" + id)
+                .done(function (data) {
+                    $("#videogame").text(formatItem(data));
+                })
+
+                .fail(function (jqXHR, textStatus, err) {
+                    $("#videogame").text('Error: ' + err);
+                });
+
+            function findByName() {
+                var gameCatString = $('#gameCat').val();
+                $.getJSON(uri + "?cat" + gameCatString)
+                    .done(function (data) {
+                        $("#gameCat").text('Error: ' + err);
+                    });
+            }
+}
+    </script>
+</body>
+</html>
